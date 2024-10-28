@@ -113,7 +113,7 @@ const JobCard = (props: IProps) => {
                 }
               >
                 <span className={styles["title-session"]}>
-                  Công Việc Mới Nhất
+                  {total} IT Jobs For "Chất" Developers
                 </span>
               </div>
             </Col>

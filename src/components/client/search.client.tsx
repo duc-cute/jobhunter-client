@@ -89,7 +89,7 @@ const SearchClient = () => {
     >
       <Row gutter={[20, 20]}>
         <Col span={24}>
-          <h2>986 IT Jobs For "Chất" Developers</h2>
+          <h2>12 IT Jobs For "Chất" Developers</h2>
         </Col>
         <Col span={24} md={14}>
           <ProForm.Item name="skills">
