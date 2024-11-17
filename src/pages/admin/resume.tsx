@@ -20,6 +20,7 @@ const ResumePage = () => {
     const isFetching = useAppSelector(state => state.resume.isFetching);
     const meta = useAppSelector(state => state.resume.meta);
     const resumes = useAppSelector(state => state.resume.result);
+    const roleName = useAppSelector(state => state.account?.user?.role?.name?.toLocaleUpperCase() === "HR");
     const dispatch = useAppDispatch();
 
     const [dataInit, setDataInit] = useState<IResume | null>(null);

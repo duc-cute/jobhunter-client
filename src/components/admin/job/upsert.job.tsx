@@ -11,8 +11,9 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { CheckSquareOutlined } from "@ant-design/icons";
 import enUS from 'antd/lib/locale/en_US';
-import dayjs from 'dayjs';
 import { IJob, ISkill } from "@/types/backend";
+import moment from "moment";
+
 
 interface ISkillSelect {
     label: string;
@@ -61,6 +62,7 @@ const ViewUpsertJob = (props: any) => {
                     })
                     form.setFieldsValue({
                         ...res.data,
+                  
                         company: {
                             label: res.data.company?.name as string,
                             value: `${res.data.company?.id}@#$${res.data.company?.logo}` as string,
@@ -129,8 +131,8 @@ const ViewUpsertJob = (props: any) => {
                 quantity: values.quantity,
                 level: values.level,
                 description: value,
-                startDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.startDate) ? dayjs(values.startDate, 'DD/MM/YYYY').toDate() : values.startDate,
-                endDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.endDate) ? dayjs(values.endDate, 'DD/MM/YYYY').toDate() : values.endDate,
+                startDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.startDate) ? moment(values.startDate, 'DD/MM/YYYY').toDate() : values.startDate,
+                endDate: /[0-9]{2}[/][0-9]{2}[/][0-9]{4}$/.test(values.endDate) ? moment(values.endDate, 'DD/MM/YYYY').toDate() : values.endDate,
                 active: values.active,
 
             }
@@ -162,8 +164,8 @@ const ViewUpsertJob = (props: any) => {
                 quantity: values.quantity,
                 level: values.level,
                 description: value,
-                startDate: dayjs(values.startDate, 'DD/MM/YYYY').toDate(),
-                endDate: dayjs(values.endDate, 'DD/MM/YYYY').toDate(),
+                startDate: moment(values.startDate, 'DD/MM/YYYY').toDate(),
+                endDate: moment(values.endDate, 'DD/MM/YYYY').toDate(),
                 active: values.active
             }
 
@@ -321,7 +323,6 @@ const ViewUpsertJob = (props: any) => {
                                 <ProFormDatePicker
                                     label="Ngày bắt đầu"
                                     name="startDate"
-                                    normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
                                     fieldProps={{
                                         format: 'DD/MM/YYYY',
 
@@ -334,7 +335,6 @@ const ViewUpsertJob = (props: any) => {
                                 <ProFormDatePicker
                                     label="Ngày kết thúc"
                                     name="endDate"
-                                    normalize={(value) => value && dayjs(value, 'DD/MM/YYYY')}
                                     fieldProps={{
                                         format: 'DD/MM/YYYY',
 

@@ -13,6 +13,7 @@ import {
   callFetchCompany,
   callFetchRole,
   callUpdateUser,
+  callUpdateUserByAdmin,
 } from "@/config/api";
 import { IUser } from "@/types/backend";
 import { DebounceSelect } from "./debouce.select";
@@ -64,6 +65,7 @@ const ModalUser = (props: IProps) => {
   const submitUser = async (valuesForm: any) => {
     const { name, email, password, address, age, gender, role, company } =
       valuesForm;
+    console.log("company",company)
     if (dataInit?.id) {
       //update
       const user = {
@@ -74,14 +76,14 @@ const ModalUser = (props: IProps) => {
         age,
         gender,
         address,
-        role: { id: role.value, name: "" },
+        role: { id: role?.value || role?.id, name: "" },
         company: {
-          id: company.value,
-          name: company.label,
+          id: company.value || company.id,
+          name: company.label || company.name,
         },
       };
 
-      const res = await callUpdateUser(user);
+      const res = await callUpdateUserByAdmin(user);
       if (res.data) {
         message.success("Cập nhật user thành công");
         handleReset();
@@ -101,7 +103,7 @@ const ModalUser = (props: IProps) => {
         age,
         gender,
         address,
-        role: { id: role.value, name: "" },
+        role: { id: role?.value, name: "" },
         company: {
           id: company.value,
           name: company.label,
@@ -240,7 +242,7 @@ const ModalUser = (props: IProps) => {
             <ProForm.Item
               name="role"
               label="Vai trò"
-              rules={[{ required: true, message: "Vui lòng chọn vai trò!" }]}
+              // rules={[{ required: true, message: "Vui lòng chọn vai trò!" }]}
             >
               <DebounceSelect
                 allowClear

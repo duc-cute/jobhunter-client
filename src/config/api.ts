@@ -108,6 +108,10 @@ export const callUpdateUser = (user: IUserUpdate) => {
     return axios.put<IBackendRes<IUser>>(`/api/v1/users`, { ...user })
 }
 
+export const callUpdateUserByAdmin = (user: IUserUpdate) => {
+    return axios.put<IBackendRes<IUser>>(`/api/v1/user-by-admin`, { ...user })
+}
+
 export const callDeleteUser = (id: string) => {
     return axios.delete<IBackendRes<IUser>>(`/api/v1/users/${id}`);
 }

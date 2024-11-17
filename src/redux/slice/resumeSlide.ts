@@ -22,6 +22,8 @@ export const fetchResume = createAsyncThunk(
 )
 
 
+
+
 const initialState: IState = {
     isFetching: true,
     meta: {

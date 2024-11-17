@@ -31,6 +31,7 @@ interface ICompanyLogo {
 
 const ModalCompany = (props: IProps) => {
     const { openModal, setOpenModal, reloadTable, dataInit, setDataInit } = props;
+    console.log("dataInit",dataInit)
 
     //modal animation
     const [animation, setAnimation] = useState<string>('open');
@@ -47,6 +48,12 @@ const ModalCompany = (props: IProps) => {
     useEffect(() => {
         if (dataInit?.id && dataInit?.description) {
             setValue(dataInit.description);
+        }
+        if(dataInit?.logo) {
+            setDataLogo([{
+                name: dataInit?.logo,
+                uid: uuidv4()
+            }])
         }
     }, [dataInit])
 
@@ -218,6 +225,7 @@ const ModalCompany = (props: IProps) => {
                                         required: true,
                                         message: 'Vui lòng không bỏ trống',
                                         validator: () => {
+                                            console.log("dataLogo",dataLogo)
                                             if (dataLogo.length > 0) return Promise.resolve();
                                             else return Promise.reject(false);
                                         }

@@ -30,6 +30,8 @@ const CompanyPage = () => {
             const res = await callDeleteCompany(id);
             if (res && +res.statusCode === 200) {
                 message.success('Xóa Company thành công');
+                const query = buildQueryRefreshData()
+                dispatch(fetchCompany({query}))
                 reloadTable();
             } else {
                 notification.error({
@@ -41,7 +43,9 @@ const CompanyPage = () => {
     }
 
     const reloadTable = () => {
+
         tableRef?.current?.reload();
+
     }
 
     const columns: ProColumns<ICompany>[] = [
@@ -178,6 +182,29 @@ const CompanyPage = () => {
         if (sort && sort.updatedAt) {
             sortBy = sort.updatedAt === 'ascend' ? "sort=updatedAt,asc" : "sort=updatedAt,desc";
         }
+
+        //mặc định sort theo updatedAt
+        if (Object.keys(sortBy).length === 0) {
+            temp = `${temp}&sort=updatedAt,desc`;
+        } else {
+            temp = `${temp}&${sortBy}`;
+        }
+
+        return temp;
+    }
+
+
+    const buildQueryRefreshData = () => {
+        const q: any = {
+            page: 1,
+            size: 10,
+            filter: ""
+        }
+
+        let temp = queryString.stringify(q);
+
+        let sortBy = "";
+    
 
         //mặc định sort theo updatedAt
         if (Object.keys(sortBy).length === 0) {
