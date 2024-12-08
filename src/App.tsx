@@ -30,6 +30,7 @@ import ClientJobDetailPage from "./pages/job/detail";
 import ClientCompanyPage from "./pages/company";
 import ClientCompanyDetailPage from "./pages/company/detail";
 import JobTabs from "./pages/admin/job/job.tabs";
+import UserTabs from "./pages/admin/user/user.tabs";
 
 const LayoutClient = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -111,11 +112,21 @@ export default function App() {
         },
         {
           path: "user",
-          element: (
-            <ProtectedRoute>
-              <UserPage />
-            </ProtectedRoute>
-          ),
+          children: [
+            {
+              index: true,
+              element: (
+                <ProtectedRoute>
+                  <UserTabs />
+                </ProtectedRoute>
+              ),
+            },
+          ]
+          // element: (
+          //   <ProtectedRoute>
+          //     <UserPage />
+          //   </ProtectedRoute>
+          // ),
         },
 
         {

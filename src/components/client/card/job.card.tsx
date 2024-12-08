@@ -16,7 +16,7 @@ import {
   useSearchParams,
 } from "react-router-dom";
 import styles from "styles/client.module.scss";
-import { sfIn } from "spring-filter-query-builder";
+import { sfIn, sfLike } from "spring-filter-query-builder";
 
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
@@ -49,9 +49,7 @@ const JobCard = (props: IProps) => {
   const fetchJob = async () => {
     setIsLoading(true);
     let query = `page=${current}&size=${pageSize}`;
-    if (filter) {
-      query += `&${filter}`;
-    }
+    query += `&filter=${sfLike("active", "true")}`;
     if (sortQuery) {
       query += `&${sortQuery}`;
     }
@@ -60,7 +58,7 @@ const JobCard = (props: IProps) => {
     const queryLocation = searchParams.get("location");
     const querySkills = searchParams.get("skills");
     if (queryLocation || querySkills) {
-      let q = "";
+      let q = `${sfLike("active", "true")}`;
       if (queryLocation) {
         q = sfIn("location", queryLocation.split(",")).toString();
       }

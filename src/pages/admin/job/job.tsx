@@ -26,13 +26,12 @@ const JobPage = () => {
     const handleDeleteJob = async (id: string | undefined) => {
         if (id) {
             const res = await callDeleteJob(id);
-            if (res && res.data) {
+            if (res) {
                 message.success('Xóa Job thành công');
                 reloadTable();
             } else {
                 notification.error({
                     message: 'Có lỗi xảy ra',
-                    description: res.message
                 });
             }
         }

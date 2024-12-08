@@ -13,6 +13,7 @@ import { CheckSquareOutlined } from "@ant-design/icons";
 import enUS from 'antd/lib/locale/en_US';
 import { IJob, ISkill } from "@/types/backend";
 import moment from "moment";
+import { useAppSelector } from "@/redux/hooks";
 
 
 interface ISkillSelect {
@@ -33,6 +34,10 @@ const ViewUpsertJob = (props: any) => {
     const id = params?.get("id"); // job id
     const [dataUpdate, setDataUpdate] = useState<IJob | null>(null);
     const [form] = Form.useForm();
+
+    const user = useAppSelector((state) => state.account.user);
+    console.log("user",user)
+
 
     useEffect(() => {
         const init = async () => {
@@ -149,6 +154,7 @@ const ViewUpsertJob = (props: any) => {
             }
         } else {
             //create
+            console.log('values',values)
             const cp = values?.company?.value?.split('@#$');
             const arrSkills = values?.skills?.map((item: string) => { return { id: +item } });
             const job = {
@@ -164,8 +170,8 @@ const ViewUpsertJob = (props: any) => {
                 quantity: values.quantity,
                 level: values.level,
                 description: value,
-                startDate: moment(values.startDate, 'DD/MM/YYYY').toDate(),
-                endDate: moment(values.endDate, 'DD/MM/YYYY').toDate(),
+                startDate: values.startDate,
+                endDate: values.endDate,
                 active: values.active
             }
 
@@ -354,6 +360,7 @@ const ViewUpsertJob = (props: any) => {
                                     fieldProps={{
                                         defaultChecked: true,
                                     }}
+                                    disabled={user?.role?.name !=="SUPER ADMIN"}
                                 />
                             </Col>
                             <Col span={24}>

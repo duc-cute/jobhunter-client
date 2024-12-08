@@ -101,6 +101,18 @@ export interface IUserUpdate {
     address: string;
 }
 
+export interface IHrRegister {
+    age:  number
+    companyAddress : string
+    companyName:string, 
+    emailRegister:string, 
+    fullName:string, 
+    gender:string, 
+    permanentAddress:string, 
+    position:string, 
+    active:boolean,
+    id:string
+}
 
 export interface IJob {
     id?: string;

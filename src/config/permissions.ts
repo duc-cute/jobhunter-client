@@ -34,6 +34,8 @@ export const ALL_PERMISSIONS = {
         CREATE: { method: "POST", apiPath: '/api/v1/users', module: "USERS" },
         UPDATE: { method: "PUT", apiPath: '/api/v1/users', module: "USERS" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/users/{id}', module: "USERS" },
+        DELETE_HR: { method: "DELETE", apiPath: '/api/v1/hr-register/{id}', module: "USERS" },
+        CREATE_HR: { method: "POST", apiPath: '/api/v1/hr-register', module: "USERS" },
         UPDATE_BY_ADMIN: { method: "UPDATE", apiPath: '/api/v1/user-by_admin', module: "USERS" },
     },
 }
