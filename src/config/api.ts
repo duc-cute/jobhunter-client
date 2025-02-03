@@ -14,6 +14,7 @@ import {
   IUserUpdate,
   IChangePassword,
   IHrRegister,
+  ISEARCHJOB,
 } from "@/types/backend";
 import axios from "config/axios-customize";
 
@@ -215,6 +216,10 @@ export const callDeleteJob = (id: string) => {
 
 export const callFetchJob = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/jobs?${query}`);
+};
+
+export const callPagingJob = (searchJob:ISEARCHJOB) => {
+  return axios.post<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/paging-job`,searchJob);
 };
 
 export const callFetchJobById = (id: string) => {

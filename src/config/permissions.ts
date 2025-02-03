@@ -10,6 +10,7 @@ export const ALL_PERMISSIONS = {
         CREATE: { method: "POST", apiPath: '/api/v1/jobs', module: "JOBS" },
         UPDATE: { method: "PUT", apiPath: '/api/v1/jobs', module: "JOBS" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/jobs/{id}', module: "JOBS" },
+        POST: { method: "POST", apiPath: '/api/v1/paging-job', module: "JOBS" },
     },
     PERMISSIONS: {
         GET_PAGINATE: { method: "GET", apiPath: '/api/v1/permissions', module: "PERMISSIONS" },

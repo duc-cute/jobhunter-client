@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { callFetchJob } from '@/config/api';
-import { IJob } from '@/types/backend';
+import { callFetchJob, callPagingJob } from '@/config/api';
+import { IJob, ISEARCHJOB } from '@/types/backend';
 
 interface IState {
     isFetching: boolean;
@@ -19,6 +19,12 @@ export const fetchJob = createAsyncThunk(
         const response = await callFetchJob(query);
         return response;
     }
+
+    // async ( query :  ISEARCHJOB ) => {
+    //     console.log("query",query)
+    //     const response = await callPagingJob(query);
+    //     return response;
+    // }
 )
 
 

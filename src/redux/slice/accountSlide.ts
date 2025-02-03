@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { callFetchAccount } from '@/config/api';
+import { ICompany } from '@/types/backend';
 
 // First, create the thunk
 export const fetchAccount = createAsyncThunk(
@@ -22,6 +23,7 @@ interface IState {
         address: string;
         age: number;
         gender: string;
+        company:ICompany  | undefined,
         role: {
             id?: string;
             name?: string;
@@ -49,6 +51,7 @@ const initialState: IState = {
         address: "",
         age: 0,
         gender: "",
+        company: undefined,
         role: {
             id: "",
             name: "",
@@ -80,6 +83,7 @@ export const accountSlide = createSlice({
             state.user.age = action.payload.age;
             state.user.gender = action.payload.gender;
             state.user.role = action?.payload?.role;
+            state.user.company = action?.payload?.company
 
             if (!action?.payload?.user?.role) state.user.role = {};
             state.user.role.permissions = action?.payload?.role?.permissions ?? [];
@@ -94,6 +98,7 @@ export const accountSlide = createSlice({
                 address: "",
                 age: 0,
                 gender: "",
+                company: undefined,
                 role: {
                     id: "",
                     name: "",
@@ -127,6 +132,7 @@ export const accountSlide = createSlice({
                 state.user.age = action.payload.user?.age;
                 state.user.gender = action.payload.user?.gender;
                 state.user.role = action?.payload?.user?.role;
+                state.user.company=action.payload.user.company ?? undefined;
                 if (!action?.payload?.user?.role) state.user.role = {};
                 state.user.role.permissions = action?.payload?.user?.role?.permissions ?? [];
             }

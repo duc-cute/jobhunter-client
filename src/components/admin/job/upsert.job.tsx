@@ -43,10 +43,18 @@ const ViewUpsertJob = (props: any) => {
         const init = async () => {
             const temp = await fetchSkillList();
             setSkills(temp);
+            setCompanies([
+                {
+                    label: user?.company?.name as string,
+                    value: `${user?.company?.id}@#$${user?.company?.logo}` as string,
+                    key: user?.company?.id
+                }
+            ])
 
             if (id) {
                 const res = await callFetchJobById(id);
                 if (res && res.data) {
+                    console.log("res.data",res.data)
                     setDataUpdate(res.data);
                     setValue(res.data.description);
                     setCompanies([
@@ -77,10 +85,45 @@ const ViewUpsertJob = (props: any) => {
                     })
                 }
             }
+            else {
+                setDataUpdate({
+                    name: "", // Giá trị mặc định
+                    skills: [], // Mảng rỗng nếu không có dữ liệu
+                    location: "",
+                    salary: 0,
+                    description: "",
+                    quantity:2, 
+                    level:"", 
+                    startDate:new Date(),
+                    endDate:new Date(), 
+                    active:false,
+                    company: user?.company 
+                })
+                    
+                    form.setFieldsValue({
+                        name: "", // Giá trị mặc định
+                        skills: [], // Mảng rỗng nếu không có dữ liệu
+                        location: "",
+                        salary: 0,
+                        description: "",
+                        quantity:2, 
+                        level:"", 
+                        startDate:new Date(),
+                        endDate:new Date(), 
+                        active:false,
+                        company:  {
+                            label: user?.company?.name as string,
+                            value: `${user?.company?.id}@#$${user?.company?.logo}` as string,
+                            key: user?.company?.id
+                        },
+                    })
+                }
         }
         init();
         return () => form.resetFields()
-    }, [id])
+    }, [id ])
+
+
 
     // Usage of DebounceSelect
     async function fetchCompanyList(name: string): Promise<ICompanySelect[]> {
@@ -154,13 +197,20 @@ const ViewUpsertJob = (props: any) => {
             }
         } else {
             //create
-            console.log('values',values)
+            let company ;
+            if(user?.role?.name !=="SUPER ADMIN") {
+                company =  {
+                    id: user?.company?.id,
+                    name: user?.company?.name,
+                    logo: user?.company?.logo
+                }
+            }
             const cp = values?.company?.value?.split('@#$');
             const arrSkills = values?.skills?.map((item: string) => { return { id: +item } });
             const job = {
                 name: values.name,
                 skills: arrSkills,
-                company: {
+                company: company ? company : {
                     id: cp && cp.length > 0 ? cp[0] : "",
                     name: values.company.label,
                     logo: cp && cp.length > 1 ? cp[1] : ""
@@ -174,6 +224,7 @@ const ViewUpsertJob = (props: any) => {
                 endDate: values.endDate,
                 active: values.active
             }
+            console.log('job',job)
 
             const res = await callCreateJob(job);
             if (res.data) {
@@ -187,7 +238,6 @@ const ViewUpsertJob = (props: any) => {
             }
         }
     }
-
 
 
     return (
@@ -209,6 +259,7 @@ const ViewUpsertJob = (props: any) => {
 
                 <ConfigProvider locale={enUS}>
                     <ProForm
+
                         form={form}
                         onFinish={onFinish}
                         submitter={
@@ -297,7 +348,7 @@ const ViewUpsertJob = (props: any) => {
                                 />
                             </Col>
 
-                            {(dataUpdate?.id || !id) &&
+                            {((dataUpdate?.id || !id ) &&  user?.role?.name ==="SUPER ADMIN") &&
                                 <Col span={24} md={6}>
                                     <ProForm.Item
                                         name="company"
@@ -308,14 +359,17 @@ const ViewUpsertJob = (props: any) => {
                                             allowClear
                                             showSearch
                                             defaultValue={companies}
-                                            value={companies}
+                                            // value={companies}
+                                            value={companies.length > 0 ? companies[0] : undefined}  // Đảm bảo value được đồng bộ
                                             placeholder="Chọn công ty"
                                             fetchOptions={fetchCompanyList}
                                             onChange={(newValue: any) => {
                                                 if (newValue?.length === 0 || newValue?.length === 1) {
+                                                    console.log("lôtt")
                                                     setCompanies(newValue as ICompanySelect[]);
                                                 }
                                             }}
+                                            // disabled
                                             style={{ width: '100%' }}
                                         />
                                     </ProForm.Item>
@@ -343,7 +397,6 @@ const ViewUpsertJob = (props: any) => {
                                     name="endDate"
                                     fieldProps={{
                                         format: 'DD/MM/YYYY',
-
                                     }}
                                     // width="auto"
                                     rules={[{ required: true, message: 'Vui lòng chọn ngày cấp' }]}

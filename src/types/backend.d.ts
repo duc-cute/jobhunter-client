@@ -24,6 +24,7 @@ export interface IAccount {
         address: string;
         gender: string;
         age:int;
+        company?:ICompany | undefined,
         role: {
             id: string;
             name: string;
@@ -122,7 +123,7 @@ export interface IJob {
         id: string;
         name: string;
         logo?: string;
-    }
+    } | ICompany;
     location: string;
     salary: number;
     quantity: number;
@@ -138,6 +139,18 @@ export interface IJob {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export interface ISEARCHJOB {
+    pageIndex: number | 1;
+    pageSize:number | 10;
+    companyId?:string;
+    name?:string;
+    location?:string,
+    active?:boolean;
+    skills?:string
+}
+
+
 
 export interface IResume {
     id?: string;
