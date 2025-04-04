@@ -222,6 +222,10 @@ export const callPagingJob = (searchJob:ISEARCHJOB) => {
   return axios.post<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/paging-job`,searchJob);
 };
 
+export const callALLJob = (query: string) => {
+  return axios.get<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/jobs/public?${query}`,);
+};
+
 export const callFetchJobById = (id: string) => {
   return axios.get<IBackendRes<IJob>>(`/api/v1/jobs/${id}`);
 };

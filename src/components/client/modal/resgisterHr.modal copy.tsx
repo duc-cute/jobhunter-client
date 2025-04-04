@@ -15,11 +15,15 @@ import {
   Modal,
   notification,
   Row,
+  Tooltip,
 } from "antd";
 import { useNavigate } from "react-router-dom";
 import enUS from "antd/lib/locale/en_US";
 import { useRef, useState } from "react";
-import { callSaveHr } from "@/config/api";
+import { callFetchCompany, callSaveHr } from "@/config/api";
+import { DebounceSelect } from "@/components/admin/user/debouce.select";
+import { ICompanySelect } from "@/components/admin/user/modal.user";
+import { ArrowLeftOutlined } from "@ant-design/icons";
 
 interface IProps {
   isModalOpen: boolean;
@@ -28,6 +32,7 @@ interface IProps {
 
 const RegisterHrModal = (props: IProps) => {
   const { isModalOpen, setIsModalOpen } = props;
+  const [isSelectCompany, setIsSelectCompany] = useState(true);
   const isAuthenticated = useAppSelector(
     (state) => state.account.isAuthenticated
   );
@@ -46,7 +51,19 @@ const RegisterHrModal = (props: IProps) => {
       }
     }
   };
-
+  async function fetchCompanyList(name: string): Promise<ICompanySelect[]> {
+    const res = await callFetchCompany(`page=1&size=100&name ~ '${name}'`);
+    if (res && res.data) {
+      const list = res.data.result;
+      const temp = list.map((item) => {
+        return {
+          label: item.name as string,
+          value: `${item.id}` as string,
+        };
+      });
+      return temp;
+    } else return [];
+  }
   return (
     <>
       <Modal
@@ -87,6 +104,7 @@ const RegisterHrModal = (props: IProps) => {
                     gender,
                     permanentAddress,
                     position,
+                    companyId: values?.company?.value,
                   };
                   const res = await callSaveHr(hr);
                   if (res.data) {
@@ -137,6 +155,7 @@ const RegisterHrModal = (props: IProps) => {
                       name={"emailRegister"}
                       rules={[
                         { required: true, message: "Vui lòng không bỏ trống" },
+                        { type: "email", message: "Email không hợp lệ!" },
                       ]}
                       labelAlign="right"
                     />
@@ -146,6 +165,19 @@ const RegisterHrModal = (props: IProps) => {
                       label="Tuổi"
                       name="age"
                       placeholder="Nhập nhập tuổi"
+                      rules={[
+                        { required: true, message: "Vui lòng không bỏ trống" },
+                        ({ getFieldValue }) => ({
+                          validator(_, value) {
+                            if (!value || value >= 18) {
+                              return Promise.resolve();
+                            }
+                            return Promise.reject(
+                              new Error("Tuổi phải từ 18 trở lên!")
+                            );
+                          },
+                        }),
+                      ]}
                     />
                   </Col>
                   <Col span={12}>
@@ -172,26 +204,84 @@ const RegisterHrModal = (props: IProps) => {
                       <h3>Thông tin công ty</h3>
                     </div>
                   </Col>
-                  <Col span={24}>
-                    <ProFormText
-                      label="Tên công ty"
-                      name={"companyName"}
-                      labelAlign="right"
-                      rules={[
-                        { required: true, message: "Vui lòng không bỏ trống" },
-                      ]}
-                    />
-                  </Col>
-                  <Col span={24}>
-                    <ProFormText
-                      label="Địa chỉ công ty"
-                      name={"companyAddress"}
-                      labelAlign="right"
-                      rules={[
-                        { required: true, message: "Vui lòng không bỏ trống" },
-                      ]}
-                    />
-                  </Col>
+                  {isSelectCompany ? (
+                    <>
+                      <Col span={24}>
+                        <ProForm.Item
+                          name="company"
+                          label="Thuộc Công Ty"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng chọn company!",
+                            },
+                          ]}
+                        >
+                          <DebounceSelect
+                            allowClear
+                            showSearch
+                            placeholder="Chọn công ty"
+                            fetchOptions={fetchCompanyList}
+                            style={{ width: "100%" }}
+                          />
+                        </ProForm.Item>
+                      </Col>
+                      <Col span={24}>
+                        <p className="text text-normal">
+                          Chưa có thông tin công ty ?{" "}
+                          <span
+                            style={{ color: "blue", cursor: "pointer" }}
+                            onClick={() => setIsSelectCompany(false)}
+                          >
+                            Điền thông tin công ty
+                          </span>
+                        </p>
+                      </Col>
+                    </>
+                  ) : (
+                    <>
+                      <Col span={24}>
+                        <ProFormText
+                          label="Tên công ty"
+                          name={"companyName"}
+                          labelAlign="right"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng không bỏ trống",
+                            },
+                          ]}
+                        />
+                      </Col>
+                      <Col span={24}>
+                        <ProFormText
+                          label="Địa chỉ công ty"
+                          name={"companyAddress"}
+                          labelAlign="right"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng không bỏ trống",
+                            },
+                          ]}
+                        />
+                      </Col>
+                      <Col span={24}>
+                        <span
+                          style={{
+                            color: "blue",
+                            fontSize: "16px",
+                            cursor: "pointer",
+                          }}
+                          onClick={() => setIsSelectCompany(true)}
+                        >
+                          <Tooltip title="Quay lại">
+                            <ArrowLeftOutlined />
+                          </Tooltip>
+                        </span>
+                      </Col>
+                    </>
+                  )}
                 </Row>
               </ProForm>
             </ConfigProvider>

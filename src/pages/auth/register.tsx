@@ -61,7 +61,9 @@ const RegisterPage = () => {
                                 } //whole column
                                 label="Email"
                                 name="email"
-                                rules={[{ required: true, message: 'Email không được để trống!' }]}
+                                rules={[{ required: true, message: 'Email không được để trống!' },
+                                    { type: "email", message: "Email không hợp lệ!" },
+                                ]}
                             >
                                 <Input type='email' />
                             </Form.Item>
@@ -78,7 +80,17 @@ const RegisterPage = () => {
                                 labelCol={{ span: 24 }} //whole column
                                 label="Tuổi"
                                 name="age"
-                                rules={[{ required: true, message: 'Tuổi không được để trống!' }]}
+                                rules={[
+                                    { required: true, message: "Vui lòng không bỏ trống" },
+                                    ({ getFieldValue }) => ({
+                                      validator(_, value) {
+                                        if (!value || value >= 18) {
+                                          return Promise.resolve();
+                                        }
+                                        return Promise.reject(new Error("Tuổi phải từ 18 trở lên!"));
+                                      },
+                                    }),
+                                  ]}
                             >
                                 <Input type='number' />
                             </Form.Item>

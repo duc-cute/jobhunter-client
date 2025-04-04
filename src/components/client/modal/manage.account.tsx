@@ -142,7 +142,17 @@ const UserUpdateInfo = (props: any) => {
                             <Form.Item
                                 label="Tuổi"
                                 name="age"
-                                rules={[{ required: true, message: 'Tuổi không được để trống!' }]}
+                                rules={[
+                                    { required: true, message: 'Tuổi không được để trống!' },
+                                    ({ getFieldValue }) => ({
+                                        validator(_, value) {
+                                            if (!value || value >= 18) {
+                                                return Promise.resolve();
+                                            }
+                                            return Promise.reject(new Error('Tuổi phải từ 18 trở lên!'));
+                                        },
+                                    }),
+                                ]}
                             >
                                 <Input type='number' />
                             </Form.Item>

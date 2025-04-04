@@ -11,6 +11,7 @@ export const ALL_PERMISSIONS = {
         UPDATE: { method: "PUT", apiPath: '/api/v1/jobs', module: "JOBS" },
         DELETE: { method: "DELETE", apiPath: '/api/v1/jobs/{id}', module: "JOBS" },
         POST: { method: "POST", apiPath: '/api/v1/paging-job', module: "JOBS" },
+        GET: { method: "GET", apiPath: '/api/v1/jobs/public', module: "JOBS" },
     },
     PERMISSIONS: {
         GET_PAGINATE: { method: "GET", apiPath: '/api/v1/permissions', module: "PERMISSIONS" },

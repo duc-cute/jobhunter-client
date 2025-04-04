@@ -30,6 +30,7 @@ export interface ICompanySelect {
   label: string;
   value: string;
   key?: string;
+  id?: string | number;
 }
 
 const ModalUser = (props: IProps) => {
@@ -65,7 +66,7 @@ const ModalUser = (props: IProps) => {
   const submitUser = async (valuesForm: any) => {
     const { name, email, password, address, age, gender, role, company } =
       valuesForm;
-    console.log("company",company)
+    console.log("company", company);
     if (dataInit?.id) {
       //update
       const user = {

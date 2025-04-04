@@ -153,8 +153,10 @@ const ViewUpsertJob = (props: any) => {
             return temp;
         } else return [];
     }
+    {console.log("user",user)}
 
     const onFinish = async (values: any) => {
+        console.log("values",values)
         if (dataUpdate?.id) {
             //update
             const cp = values?.company?.value?.split('@#$');
@@ -170,9 +172,9 @@ const ViewUpsertJob = (props: any) => {
                 name: values.name,
                 skills: arrSkills,
                 company: {
-                    id: cp && cp.length > 0 ? cp[0] : "",
-                    name: values.company.label,
-                    logo: cp && cp.length > 1 ? cp[1] : ""
+                    id: cp && cp?.length > 0 ? cp?.[0] : user?.company?.id || "",
+                    name: values?.company?.label || user?.company?.name || "",
+                    logo: cp && cp?.length > 1 ? cp?.[1] : user?.company?.logo || ""
                 },
                 location: values.location,
                 salary: values.salary,
@@ -198,7 +200,7 @@ const ViewUpsertJob = (props: any) => {
         } else {
             //create
             let company ;
-            if(user?.role?.name !=="SUPER ADMIN") {
+            if(user?.role?.name !=="SUPER ADMIN" && user?.role?.name !=="HR") {
                 company =  {
                     id: user?.company?.id,
                     name: user?.company?.name,

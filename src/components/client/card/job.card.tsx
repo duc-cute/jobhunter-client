@@ -1,4 +1,4 @@
-import { callFetchJob } from "@/config/api";
+import { callFetchJob,callALLJob } from "@/config/api";
 import { convertSlug, getLocationName } from "@/config/utils";
 import { IJob } from "@/types/backend";
 import {
@@ -72,7 +72,7 @@ const JobCard = (props: IProps) => {
       query += `&filter=${encodeURIComponent(q)}`;
     }
 
-    const res = await callFetchJob(query);
+    const res = await callALLJob(query);
     if (res && res.data) {
       setDisplayJob(res.data.result);
       setTotal(res.data.meta.total);
