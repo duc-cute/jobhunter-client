@@ -15,6 +15,8 @@ import {
   IChangePassword,
   IHrRegister,
   ISEARCHJOB,
+  IDashBoard,
+  IRangeTime,
 } from "@/types/backend";
 import axios from "config/axios-customize";
 
@@ -184,8 +186,10 @@ export const callSaveHr = (hr: IHrRegister) => {
   return axios.post<IBackendRes<IHrRegister>>(`/api/v1/hr-register`, { ...hr });
 };
 
-export const callActiveHr = (dto:IHrRegister) => {
-  return axios.post<IBackendRes<IHrRegister>>(`/api/v1/hr-register-active`, {...dto} );
+export const callActiveHr = (dto: IHrRegister) => {
+  return axios.post<IBackendRes<IHrRegister>>(`/api/v1/hr-register-active`, {
+    ...dto,
+  });
 };
 export const callDeleteHr = (id: string) => {
   return axios.delete<IBackendRes<IHrRegister>>(`/api/v1/hr-register/${id}`);
@@ -218,12 +222,17 @@ export const callFetchJob = (query: string) => {
   return axios.get<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/jobs?${query}`);
 };
 
-export const callPagingJob = (searchJob:ISEARCHJOB) => {
-  return axios.post<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/paging-job`,searchJob);
+export const callPagingJob = (searchJob: ISEARCHJOB) => {
+  return axios.post<IBackendRes<IModelPaginate<IJob>>>(
+    `/api/v1/paging-job`,
+    searchJob
+  );
 };
 
 export const callALLJob = (query: string) => {
-  return axios.get<IBackendRes<IModelPaginate<IJob>>>(`/api/v1/jobs/public?${query}`,);
+  return axios.get<IBackendRes<IModelPaginate<IJob>>>(
+    `/api/v1/jobs/public?${query}`
+  );
 };
 
 export const callFetchJobById = (id: string) => {
@@ -366,4 +375,9 @@ export const callFetchSubscriber = (query: string) => {
 
 export const callFetchSubscriberById = (id: string) => {
   return axios.get<IBackendRes<ISubscribers>>(`/api/v1/subscribers/${id}`);
+};
+
+// Dashboard
+export const callFetchDashboard = (range: IRangeTime) => {
+  return axios.post<IBackendRes<IDashBoard>>("/api/v1/report/", range);
 };

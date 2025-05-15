@@ -221,3 +221,16 @@ export interface ISubscribers {
   createdAt?: string;
   updatedAt?: string;
 }
+
+export interface IDashBoard {
+  users: number;
+  jobs: number;
+  cvs: number;
+  companies: number;
+  listReportCompany: [];
+}
+
+export interface IRangeTime {
+  fromDate: Date;
+  toDate: Date;
+}
